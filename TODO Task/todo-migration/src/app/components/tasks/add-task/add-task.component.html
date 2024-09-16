@@ -1,0 +1,42 @@
+<div class="d-flex flex-column align-items-center">
+  <h3 class="mt-5">Add Task</h3>
+  <form id="task-form" class="w-50 mb-5 text-center" (ngSubmit)="addTask()">
+    <div class="mb-3">
+      <label for="task-name" class="form-label">Task Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="task-name"
+        name="task-name"
+        [(ngModel)]="enteredName"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="task-description" class="form-label">Description</label>
+      <input
+        type="text"
+        class="form-control"
+        id="task-description"
+        name="task-description"
+        [(ngModel)]="enteredDescription"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="task-priority" class="form-label">Priority</label>
+      <input
+        type="range"
+        class="form-range"
+        id="task-priority"
+        name="task-priority"
+        min="1"
+        max="5"
+        [(ngModel)]="enteredPriority"
+      />
+      <div class="d-flex justify-content-between">
+        <span>1</span>
+        <span>5</span>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Task</button>
+  </form>
+</div>
