@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule } from '@angular/forms';
 import { TodoService } from '../../../services/todo.service';
+import { Todo } from '../../../interfaces/todo';
 
 @Component({
   selector: 'app-add-task',
@@ -26,11 +27,23 @@ export class AddTaskComponent {
       return;
     }
 
-    this.todoService.addTask({
+    const newTodo = {
       name: this.enteredName,
       description: this.enteredDescription,
       priority: this.enteredPriority,
       completed: false,
+    };
+
+    this.todoService.addTask(newTodo).subscribe({
+      next: (id) => {
+        const addedTodo = { ...newTodo, id };
+        const prevTasks = this.todoService.todos() || [];
+        this.todoService.todos.set([...prevTasks, addedTodo] as Todo[]);
+      },
+      error: (error) => {
+        console.error('Error adding task:', error);
+        alert('Failed to add task. Please try again.');
+      },
     });
   }
 }

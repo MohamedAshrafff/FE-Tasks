@@ -1,46 +1,43 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Injectable, signal } from '@angular/core';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Todo } from '../interfaces/todo';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoService {
-  private todosCollection = this.firestore.collection('todos');
-  public todos$: Observable<any[]>;
+  private apiUrl = 'https://todo-851a8-default-rtdb.firebaseio.com/todos';
+  todos = signal<Todo[] | undefined>(undefined);
 
-  constructor(private firestore: AngularFirestore) {
-    this.todos$ = this.todosCollection.snapshotChanges().pipe(
-      map((actions) =>
-        actions.map((a) => {
-          return {
-            id: a.payload.doc.id,
-            ...(a.payload.doc.data() as Omit<Todo, 'id'>),
-          } as Todo;
-        })
-      )
+  constructor(private httpClient: HttpClient) {}
+
+  completeTask(id: string) {
+    return this.httpClient.patch(this.apiUrl + '/' + id + '.json', {
+      completed: true,
+    });
+  }
+
+  fetchTasks() {
+    return this.httpClient.get<Todo[]>(this.apiUrl + '.json').pipe(
+      map((responseData) => {
+        const todosArray: Todo[] = [];
+        for (const key in responseData) {
+          if (responseData.hasOwnProperty(key)) {
+            todosArray.push({ ...responseData[key], id: key });
+          }
+        }
+        return todosArray;
+      }),
+      tap({
+        next: (todos) => {
+          this.todos.set(todos);
+        },
+      })
     );
   }
 
-  getAllTodos(): Observable<any[]> {
-    return this.todos$;
-  }
-
-  completeTask(id: string): void {
-    try {
-      this.todosCollection.doc(id).update({ completed: true });
-    } catch (error) {
-      console.error('Error completing task:', error);
-    }
-  }
-
-  addTask(todo: Omit<Todo, 'id'>): void {
-    try {
-      this.todosCollection.add(todo);
-    } catch (error) {
-      console.error('Error adding task:', error);
-    }
+  addTask(todo: Omit<Todo, 'id'>) {
+    return this.httpClient.post(this.apiUrl + '.json', todo);
   }
 }
