@@ -19,7 +19,7 @@ export class TasksListComponent {
   constructor(private todoService: TodoService) {}
 
   ngOnInit(): void {
-    this.todoService.fetchTasks().subscribe();
+    this.todoService.fetchTasksByUser().subscribe();
   }
 
   completeTask(id: string) {

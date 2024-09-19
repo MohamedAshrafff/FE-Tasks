@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { merge, Observable } from 'rxjs';
 import { AuthService, AuthResponseData } from '../../services/auth.service';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -39,7 +40,8 @@ export class AuthComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     merge(this.email.statusChanges, this.email.valueChanges)
       .pipe(takeUntilDestroyed())
@@ -74,6 +76,7 @@ export class AuthComponent {
 
     authObs.subscribe({
       next: (response) => {
+        this.router.navigate(['/todos']);
         this.isLoading = false;
         console.log(response);
       },

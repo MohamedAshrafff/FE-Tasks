@@ -4,4 +4,5 @@ export interface Todo {
   description: string;
   completed: boolean;
   priority: string;
+  user: string;
 }

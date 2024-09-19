@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { TodoService } from '../../../services/todo.service';
 import { Todo } from '../../../interfaces/todo';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-add-task',
@@ -15,7 +17,11 @@ export class AddTaskComponent {
   enteredDescription = '';
   enteredPriority = '';
 
-  constructor(private todoService: TodoService) {}
+  constructor(
+    private todoService: TodoService,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   addTask() {
     if (
@@ -32,6 +38,7 @@ export class AddTaskComponent {
       description: this.enteredDescription,
       priority: this.enteredPriority,
       completed: false,
+      user: this.authService.user.value?.email || '',
     };
 
     this.todoService.addTask(newTodo).subscribe({
@@ -39,6 +46,7 @@ export class AddTaskComponent {
         const addedTodo = { ...newTodo, id };
         const prevTasks = this.todoService.todos() || [];
         this.todoService.todos.set([...prevTasks, addedTodo] as Todo[]);
+        this.router.navigate(['/todos']);
       },
       error: (error) => {
         console.error('Error adding task:', error);
