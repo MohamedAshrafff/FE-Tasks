@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormsModule } from '@angular/forms';
-import { TodoService } from '../../../services/todo.service';
-import { Todo } from '../../../interfaces/todo';
+import { TodoService } from '../../../services/todo/todo.service';
+import { Todo } from '../../../interfaces/todo.model';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-add-task',

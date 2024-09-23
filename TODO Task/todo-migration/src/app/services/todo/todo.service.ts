@@ -1,8 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
-import { Todo } from '../interfaces/todo';
+import { Todo } from '../../interfaces/todo.model';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',

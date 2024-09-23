@@ -1,0 +1,113 @@
+<h1 class="text-center mt-3">Add Group Task</h1>
+<mat-horizontal-stepper linear>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Step 1: Todo Info</ng-template>
+      <mat-form-field>
+        <mat-label>Task Name</mat-label>
+        <input matInput formControlName="taskName" required />
+        <mat-error *ngIf="firstFormGroup.get('taskName')?.hasError('required')">
+          Task Name is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Task Description</mat-label>
+        <input matInput formControlName="taskDescription" required />
+        <mat-error
+          *ngIf="firstFormGroup.get('taskDescription')?.hasError('required')"
+        >
+          Task Description is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Task Priority</mat-label>
+        <input
+          matInput
+          class="form-range"
+          formControlName="taskPriority"
+          required
+        />
+        <mat-error
+          *ngIf="
+            firstFormGroup.get('taskPriority')?.hasError('required') ||
+            firstFormGroup.get('taskPriority')?.hasError('min') ||
+            firstFormGroup.get('taskPriority')?.hasError('max')
+          "
+        >
+          Task Priority is required and must be between 1 and 5
+        </mat-error>
+      </mat-form-field>
+
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Step 2: Assigned Emails</ng-template>
+
+      <div formArrayName="emails">
+        <div
+          *ngFor="let email of emails.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" required />
+            <mat-error *ngIf="email.get('email')?.hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="email.get('email')?.hasError('email')">
+              Not a valid email
+            </mat-error>
+            <button mat-button (click)="removeEmail(i)">Remove</button>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <button mat-button (click)="addEmail()">Add Email</button>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Step 3: Review</ng-template>
+    <div>
+      <h4>Your Details:</h4>
+      <p>First Name: {{ firstFormGroup.value.taskName }}</p>
+      <p>Last Name: {{ firstFormGroup.value.taskDescription }}</p>
+      <p>Priority: {{ firstFormGroup.value.taskPriority }}</p>
+      <h4>Assigned Emails:</h4>
+      <div *ngFor="let email of secondFormGroup.value.emails">
+        <p>{{ email.email }}</p>
+      </div>
+    </div>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="onSubmit()">Submit</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>
+<hr />
+<ul id="tasks-list" class="list-group">
+  @for (item of tasks; track $index) {
+  <li
+    class="d-flex list-group-item justify-content-between text-center"
+    [ngClass]="{ 'bg-light text-muted': item.completed }"
+  >
+    <h4>Name : {{ item.taskName }}</h4>
+    <p>Desc : {{ item.taskDescription }}</p>
+    <p>Priority : {{ item.taskPriority }}</p>
+    @for (email of item.emails; track $index) {
+    <p>Email : {{ email }}</p>
+    }
+  </li>
+  }
+</ul>

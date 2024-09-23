@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { TodoService } from '../../../services/todo.service';
-import { Todo } from '../../../interfaces/todo';
+import { TodoService } from '../../../services/todo/todo.service';
+import { Todo } from '../../../interfaces/todo.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 

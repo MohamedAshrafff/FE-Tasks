@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from './components/header/header.component';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/auth/auth.service';
 @Component({
   selector: 'app-root',
   standalone: true,

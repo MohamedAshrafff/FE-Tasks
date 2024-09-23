@@ -12,7 +12,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatInputModule } from '@angular/material/input';
 import { merge, Observable } from 'rxjs';
-import { AuthService, AuthResponseData } from '../../services/auth.service';
+import {
+  AuthService,
+  AuthResponseData,
+} from '../../services/auth/auth.service';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { Router } from '@angular/router';
 

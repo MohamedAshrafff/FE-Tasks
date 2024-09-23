@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
-import { User } from '../interfaces/user.model';
+import { User } from '../../interfaces/user.model';
 import { Router } from '@angular/router';
 
 export interface AuthResponseData {
